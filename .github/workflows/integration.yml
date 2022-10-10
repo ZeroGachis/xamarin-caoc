@@ -1,0 +1,33 @@
+name: SmartwayCaoc-Integration
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'release/**'
+      - 'hotfix/**'
+
+jobs:
+  format-version:
+    name: Format versions
+    runs-on: [self-hosted, python]
+    outputs:
+      lib-version-formated: ${{ steps.format-lib-version.outputs.lib-version }}
+    steps:
+    - name: "Format lib version"
+      id: format-lib-version
+      run: echo "::set-output name=lib-version::$(sed 's/^[^\/]*\///' <<< ${{github.ref_name}} )"
+
+  smartway-caoc:
+    needs: format-version
+    uses: ./.github/workflows/smartway-caoc-build.yml
+    with:
+      lib-version: ${{needs.format-version.outputs.lib-version-formated}}.${{ github.run_number }}
+      configuration: Release
+    secrets: inherit
+
+  notify:
+    if: ${{ success() }}
+    needs: [format-version, smartway-caoc]
+    uses: ./.github/workflows/notify.yml
+    secrets: inherit
