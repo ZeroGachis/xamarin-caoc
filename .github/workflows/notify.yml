@@ -1,0 +1,47 @@
+name: Notify-Slack
+
+on:
+  workflow_call:
+
+jobs:
+  notify:
+    name: Notify Slack
+    runs-on: [self-hosted, python]
+    steps:
+    - name: Send Slack Notification
+      uses: slackapi/slack-github-action@v1.18.0
+      with:
+        payload: |
+          {
+            "blocks": [
+              {
+                "type": "header",
+                "text": {
+                  "type": "plain_text",
+                  "text": "[${{ github.workflow }} : ${{ github.event.number || github.ref_name }}] ${{ job.status }}",
+                  "emoji": true
+                }
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "Pipeline ${{ github.workflow }} launched by ${{ github.actor }} ${{ job.status }}"
+                },
+                "accessory": {
+                  "type": "button",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Pipeline on Github",
+                    "emoji": true
+                  },
+                  "value": "Github",
+                  "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{github.run_id }}",
+                  "action_id": "button-action"
+                }
+              }
+            ]
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_HOOK_URL }}
+        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
