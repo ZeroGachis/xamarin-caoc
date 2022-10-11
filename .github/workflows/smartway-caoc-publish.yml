@@ -34,7 +34,7 @@ jobs:
       run: msbuild Cat.Ereza.Customactivityoncrash.sln -p:Configuration=${{ inputs.configuration }} -clp:Summary
 
     - name: Package the lib
-      run: nuget pack Cat.Ereza.Customactivityoncrash/Cat.Ereza.Customactivityoncrash.csproj -properties Configuration=${{ inputs.configuration }}
+      run: nuget pack Cat.Ereza.Customactivityoncrash/Cat.Ereza.Customactivityoncrash.csproj -properties Configuration=${{ inputs.configuration }} -Version ${{ inputs.lib-version }}
 
     - name: Publish the lib
       run: nuget push *.nupkg -ApiKey ${{ secrets.NUGET_API_KEY }} -Source https://api.nuget.org/v3/index.json -SkipDuplicate

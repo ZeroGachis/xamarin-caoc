@@ -7,26 +7,15 @@ on:
       - '*'
 
 jobs:
-  format-version:
-    name: Format versions
-    runs-on: [self-hosted, python]
-    outputs:
-      lib-version-formated: ${{ steps.format-lib-version.outputs.lib-version }}
-    steps:
-    - name: "Format lib version"
-      id: format-lib-version
-      run: echo "::set-output name=lib-version::$(sed 's/^[^\/]*\///' <<< ${{github.ref_name}} )"
-
   smartway-caoc:
-    needs: format-version
     uses: ./.github/workflows/smartway-caoc-publish.yml
     with:
-      lib-version: ${{needs.format-version.outputs.lib-version-formated}}.${{ github.run_number }}
+      lib-version: ${{github.ref_name}}
       configuration: Release
     secrets: inherit
 
   notify:
     if: ${{ success() }}
-    needs: [format-version, smartway-caoc]
+    needs: [smartway-caoc]
     uses: ./.github/workflows/notify.yml
     secrets: inherit
