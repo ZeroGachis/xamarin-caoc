@@ -10,7 +10,7 @@ on:
 jobs:
   format-version:
     name: Format versions
-    runs-on: [self-hosted, python]
+    runs-on: ubuntu-latest
     outputs:
       lib-version-formated: ${{ steps.format-lib-version.outputs.lib-version }}
     steps:
@@ -24,10 +24,4 @@ jobs:
     with:
       lib-version: ${{needs.format-version.outputs.lib-version-formated}}.${{ github.run_number }}
       configuration: Release
-    secrets: inherit
-
-  notify:
-    if: ${{ success() }}
-    needs: [format-version, smartway-caoc]
-    uses: ./.github/workflows/notify.yml
     secrets: inherit
