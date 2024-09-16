@@ -14,8 +14,3 @@ jobs:
       configuration: Release
     secrets: inherit
 
-  notify:
-    if: ${{ success() }}
-    needs: [smartway-caoc]
-    uses: ./.github/workflows/notify.yml
-    secrets: inherit

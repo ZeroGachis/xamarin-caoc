@@ -25,9 +25,3 @@ jobs:
       lib-version: ${{needs.format-version.outputs.lib-version-formated}}.${{ github.run_number }}
       configuration: Release
     secrets: inherit
-
-  notify:
-    if: ${{ success() }}
-    needs: [format-version, smartway-caoc]
-    uses: ./.github/workflows/notify.yml
-    secrets: inherit
