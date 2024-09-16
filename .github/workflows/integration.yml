@@ -10,7 +10,7 @@ on:
 jobs:
   format-version:
     name: Format versions
-    runs-on: [self-hosted, python]
+    runs-on: ubuntu-latest
     outputs:
       lib-version-formated: ${{ steps.format-lib-version.outputs.lib-version }}
     steps:
