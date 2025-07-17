@@ -36,7 +36,7 @@ jobs:
 
     - name: Send Slack Notification
       if: ${{ failure() }}
-      uses: slackapi/slack-github-action@v1.18.0
+      uses: slackapi/slack-github-action@v2.1.1
       with:
         payload: |
           {
