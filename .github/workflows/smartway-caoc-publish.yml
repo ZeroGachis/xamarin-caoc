@@ -18,7 +18,7 @@ jobs:
       uses: mickem/clean-after-action@v2
 
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Modify AssemblyInfo files
       uses: mingjun97/file-regex-replace@v1
